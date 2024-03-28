@@ -1,9 +1,9 @@
-// index.js
 const express = require("express");
 const app = express();
-require("dotenv").config();
 const linkRouter = require("./routes/link");
 const cors = require("cors")
+const connectDB = require("./database/connect");
+const uri = process.env.MONGO_URI;
 
 connectDB(uri || 8080);
 
