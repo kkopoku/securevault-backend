@@ -11,6 +11,10 @@ connectDB(uri || 8080);
 app.use(express.json());
 app.use(cors());
 
+app.get("/", function(req, res){ return res.json("securevault")})
+
+app.get("/health", function(req, res){ return res.json("success")})
+
 // Routes
 app.use('/api/v1/link', linkRouter);
 
