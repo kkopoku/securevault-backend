@@ -1,9 +1,9 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const app = express();
-const linkRouter = require("./routes/link");
+const linkRouter = require("../routes/link");
 const cors = require("cors")
-const connectDB = require("./database/connect");
+const connectDB = require("../database/connect");
 const uri = process.env.MONGO_URI;
 
 connectDB(uri);
