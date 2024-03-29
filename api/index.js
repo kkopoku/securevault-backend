@@ -1,5 +1,4 @@
 const express = require("express");
-const bodyParser = require('body-parser');
 const app = express();
 const linkRouter = require("../routes/link");
 const cors = require("cors")
@@ -9,7 +8,7 @@ const uri = process.env.MONGO_URI;
 connectDB(uri);
 
 // Packages
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors());
 
 app.get("/", function(req, res){ return res.json("securevault")})
