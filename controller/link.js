@@ -1,8 +1,9 @@
 const Link = require("../models/link");
 const { generateRandomString } = require("../utils");
+const sendEmail = require("../services/email")
 
 const createLink = async (req, res) => {
-  const { message, viewNumber, lifetime, passphrase } = req.body;
+  const { message, viewNumber, lifetime, passphrase, recipient } = req.body;
   const baseURL = process.env.SECUREVAULT_WEB;
   const rand = generateRandomString(4);
 
@@ -20,8 +21,15 @@ const createLink = async (req, res) => {
       lifetime: lifetime,
       my_id: rand,
       link: `${baseURL}${rand}`,
-      passphrase: passphrase ?? null
+      passphrase: passphrase ?? null,
+      recipient: recipient
     });
+    
+    if(recipient){
+      const message = `SECUREVALUT ALERTS\nA secure message has been sent to you. Kindly click the link below to access your secure message:\nLink: ${link.link}\nPassword: ${passphrase ?? 'n/a'}`
+      sendEmail(recipient, "SecureVault Alert", message)
+    }
+
     res.status(201).json({
       message: "link created successfully",
       link: link,
