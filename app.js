@@ -1,7 +1,7 @@
 // index.js
 require("dotenv").config();
 const app = require("./api")
-const port = 8080;
+const port = 8000;
 
 async function run() {
   try {
