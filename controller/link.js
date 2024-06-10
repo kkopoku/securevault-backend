@@ -22,10 +22,10 @@ const createLink = async (req, res) => {
       my_id: rand,
       link: `${baseURL}${rand}`,
       passphrase: passphrase ?? null,
-      recipient: recipient
     });
     
     if(recipient){
+      console.log("It is getting here!");
       const message = `SECUREVALUT ALERTS\nA secure message has been sent to you. Kindly click the link below to access your secure message:\nLink: ${link.link}\nPassword: ${passphrase ?? 'n/a'}`
       sendEmail(recipient, "SecureVault Alert", message)
     }
