@@ -1,13 +1,13 @@
 const Link = require("../models/link");
 const { generateRandomString } = require("../utils");
-const sendEmail = require("../services/email")
+const sendEmail = require("../services/email");
 
 const createLink = async (req, res) => {
   const { message, viewNumber, lifetime, passphrase, recipient } = req.body;
   const baseURL = process.env.SECUREVAULT_WEB;
   const rand = generateRandomString(4);
 
-    //TO DO: Validate inputs
+  // Validate inputs
   if (!message || !viewNumber || !lifetime) {
     return res.status(400).json({
       message: "Please fill in all required fields",
@@ -23,15 +23,20 @@ const createLink = async (req, res) => {
       link: `${baseURL}${rand}`,
       passphrase: passphrase ?? null,
     });
-    
-    if(recipient){
+
+    if (recipient) {
       console.log("It is getting here!");
-      const message = `SECUREVALUT ALERTS\nA secure message has been sent to you. Kindly click the link below to access your secure message:\nLink: ${link.link}\nPassword: ${passphrase ?? 'n/a'}`
-      sendEmail(recipient, "SecureVault Alert", message)
+      const emailMessage = `SECUREVAULT ALERTS\nA secure message has been sent to you. Kindly click the link below to access your secure message:\nLink: ${link.link}\nPassword: ${passphrase ? passphrase :"n/a"}`;
+      try {
+        await sendEmail(recipient, "SecureVault Alert", emailMessage);
+        console.log("Email sent successfully");
+      } catch (emailError) {
+        console.error("Failed to send email:", emailError);
+      }
     }
 
     res.status(201).json({
-      message: "link created successfully",
+      message: "Link created successfully",
       link: link,
     });
   } catch (e) {
@@ -54,21 +59,20 @@ const getLinkDetails = async (req, res) => {
 
     const foundLink = await Link.findOne({ my_id: id });
 
-    if (!foundLink || foundLink.expires_at < Date.now() ) {
+    if (!foundLink || foundLink.expires_at < Date.now()) {
       if (foundLink) await foundLink.deleteOne();
       return res.status(404).json({
         message: "Link not found",
       });
     }
 
-    if(foundLink.passphrase){
-        if ( !(foundLink.passphrase == passphrase) ){
-            return res.status(401).json({
-                message: "Incorrect passphrase",
-              });
-        }
+    if (foundLink.passphrase) {
+      if (foundLink.passphrase !== passphrase) {
+        return res.status(401).json({
+          message: "Incorrect passphrase",
+        });
+      }
     }
-
 
     if (foundLink.viewNumber >= 2) {
       foundLink.viewNumber--;
