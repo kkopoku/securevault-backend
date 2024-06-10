@@ -11,7 +11,7 @@ const sendEmail = (recipient, subject, message) => {
 
   const mailOptions = {
     from: process.env.EMAIL,
-    to: recipient, // can be an array of emails or a single recipient("name@mail.com")
+    to: recipient,
     subject: subject,
     text: message,
   };
