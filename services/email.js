@@ -21,7 +21,9 @@ const sendEmail = async (recipient, subject, message) => {
     console.log("Message sent: %s", info.messageId);
   }
 
-  main().catch(console.error);
+  await main().catch(error=>{
+    console.log("Error: %s", error)
+  });
 };
 
 module.exports = sendEmail;
