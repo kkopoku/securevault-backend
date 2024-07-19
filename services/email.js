@@ -10,7 +10,7 @@ const sendEmail = async (recipient, subject, message) => {
   });
 
   const mailOptions = {
-    from: "alerts@svault.com>",
+    from: process.env.EMAIL,
     to: recipient,
     subject: subject,
     text: message,
