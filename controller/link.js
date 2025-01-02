@@ -1,6 +1,7 @@
 const Link = require("../models/link");
 const { generateRandomString } = require("../utils");
 const sendEmail = require("../services/email");
+const { runTest } = require("../services/encryption");
 
 const createLink = async (req, res) => {
   const { message, viewNumber, lifetime, passphrase, recipient } = req.body;
@@ -67,7 +68,8 @@ const getLinkDetails = async (req, res) => {
     }
 
     if (foundLink.passphrase) {
-      if (foundLink.passphrase !== passphrase) {
+      const isMatch = await foundLink.comparePassphrase(passphrase);
+      if (!isMatch) {
         return res.status(401).json({
           message: "Incorrect passphrase",
         });
@@ -92,4 +94,15 @@ const getLinkDetails = async (req, res) => {
   }
 };
 
-module.exports = { createLink, getLinkDetails };
+
+const testing = async (req, res) => {
+  console.log("It is getting here!");
+  let result = runTest();
+  res.status(200).json({
+    message: "Testing route",
+    result
+  });
+}
+
+
+module.exports = { createLink, getLinkDetails, testing };
