@@ -74,12 +74,18 @@ const getLinkDetails = async (req, res) => {
       });
     }
 
-    if (foundLink.passphrase) {
-      const isMatch = await foundLink.comparePassphrase(passphrase);
-      if (!isMatch) {
+    if(foundLink.passphrase){
+      if(!passphrase){
         return res.status(401).json({
-          message: "Incorrect passphrase",
+          message: "Please provide a passphrase",
         });
+      }else{
+        const isMatch = await foundLink.comparePassphrase(passphrase);
+        if (!isMatch) {
+          return res.status(401).json({
+            message: "Incorrect passphrase",
+          });
+        }
       }
     }
 
