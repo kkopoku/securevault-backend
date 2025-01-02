@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { generateRandomString } = require("../utils");
+const bcrypt = require("bcrypt");
 
 const LinkSchema = new mongoose.Schema({
   message: {
@@ -56,8 +56,23 @@ const LinkSchema = new mongoose.Schema({
   }
 });
 
-LinkSchema.pre("save", async function () {
+LinkSchema.pre("save", async function (next) {
   this.expires_at = new Date(this.created_at).getTime() + this.lifetime;
+  try {
+    if (this.isModified('passphrase')) {
+      const salt = await bcrypt.genSalt(10);
+      this.passphrase = await bcrypt.hash(this.passphrase, salt);
+    }
+    next();
+  } catch (e) {
+    next(e);
+  }
 });
+
+LinkSchema.methods.comparePassphrase = async function (candidatePassphrase) {
+  const isMatch = await bcrypt.compare(candidatePassphrase, this.passphrase);
+  return isMatch;
+};
+
 
 module.exports = mongoose.model("Link", LinkSchema);
