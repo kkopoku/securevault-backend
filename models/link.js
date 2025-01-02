@@ -59,7 +59,7 @@ const LinkSchema = new mongoose.Schema({
 LinkSchema.pre("save", async function (next) {
   this.expires_at = new Date(this.created_at).getTime() + this.lifetime;
   try {
-    if (this.isModified('passphrase')) {
+    if (this.passphrase && this.isModified('passphrase')) {
       const salt = await bcrypt.genSalt(10);
       this.passphrase = await bcrypt.hash(this.passphrase, salt);
     }
