@@ -1,7 +1,7 @@
 const Link = require("../models/link");
 const { generateRandomString } = require("../utils");
 const sendEmail = require("../services/email");
-const { runTest } = require("../services/encryption");
+const { runTest, encryptWithBaseKey, encryptWithUserPassphrase, decryptWithBaseKey, decryptWithUserPassphrase } = require("../services/encryption");
 
 const createLink = async (req, res) => {
   const { message, viewNumber, lifetime, passphrase, recipient } = req.body;
@@ -15,9 +15,16 @@ const createLink = async (req, res) => {
     });
   }
 
+  let encryptedMessage = "";
+  if (passphrase) {
+    encryptedMessage = encryptWithUserPassphrase(message, passphrase);
+  }else{
+    encryptedMessage = encryptWithBaseKey(message);
+  }
+
   try {
     const link = await Link.create({
-      message: message,
+      message: encryptedMessage,
       viewNumber: viewNumber,
       lifetime: lifetime,
       my_id: rand,
@@ -83,8 +90,12 @@ const getLinkDetails = async (req, res) => {
       await foundLink.deleteOne();
     }
 
+    let decryptedMessage = foundLink.passphrase ? 
+      decryptWithUserPassphrase(foundLink.message, passphrase) 
+      : decryptWithBaseKey(foundLink.message);
+
     res.status(200).json({
-      message: foundLink.message,
+      message: decryptedMessage,
     });
   } catch (error) {
     console.error("Error in getLinkDetails:", error);
