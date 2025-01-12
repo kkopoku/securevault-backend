@@ -18,6 +18,11 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    type: {
+        type: String,
+        required: true,
+        enum: ["subscriber", "admin"]
     }
 })
 
@@ -55,5 +60,5 @@ userSchema.pre('save', async function (next) {
     }
 });
 
-const UserModel = model('User', UserSchema)
-export default UserModel
+const User = model('User', UserSchema)
+export default User
