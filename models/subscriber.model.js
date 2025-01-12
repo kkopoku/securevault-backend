@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import User from "./user";
+import User from "./user.model";
 
 const SubscriberSchema = new Schema({
     credits:{
