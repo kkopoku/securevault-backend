@@ -1,5 +1,6 @@
-import { Schema } from "mongoose";
-import User from "./user.model";
+const { Schema } = require("mongoose");
+const User = require("./user.model");
+
 
 const SubscriberSchema = new Schema({
     credits:{
@@ -11,4 +12,5 @@ const SubscriberSchema = new Schema({
 
 
 const Subscriber = User.discriminator('subscriber', SubscriberSchema)
-export default Subscriber
+
+module.exports = Subscriber

@@ -1,12 +1,13 @@
-import User from "../models/user.model"
-import Joi from "joi"
+const User = require("../models/user.model.js")
+const Joi = require("joi")
 
-export async function registerUser(req, res) {
+
+const registerUser = async(req, res) => {
     const tag = "[auth.controller.ts][registerUser]"
     const schema = Joi.object({
         email: Joi.string().email().required(),
         password: Joi.string().min(8).required(),
-        type: Joi.string().valid(...Object.values(UserType)).required(),
+        // type: Joi.string().valid(...Object.values(UserType)).required(),
     }).unknown(true)
 
     const { error, value } = schema.validate(req.body)
@@ -41,7 +42,7 @@ export async function registerUser(req, res) {
 }
 
 
-export async function login(req, res) {
+const login = async(req, res) => {
     const schema = Joi.object({
         email: Joi.string().email().required(),
         password: Joi.string().min(8).required()
@@ -86,3 +87,5 @@ export async function login(req, res) {
         return res.status(500).json({ message: "Internal Server Error" })
     }
 }
+
+module.exports = { login, registerUser};

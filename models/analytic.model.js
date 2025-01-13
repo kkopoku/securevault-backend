@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require("mongoose");
 
 const AnalyticSchema = new Schema({
 
@@ -10,4 +10,4 @@ const AnalyticSchema = new Schema({
 })
 
 const Analytics = model("Analytic", AnalyticSchema)
-export default Analytics
+module.exports =  Analytics
