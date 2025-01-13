@@ -1,14 +1,11 @@
-import { Response } from "express";
-
 /**
  * 
- * @param {Response} res 
- * @param {any} data 
- * @param {String} message 
- * @param {Number} statusCode s
+ * @param {import("express").Response} res 
+ * @param {any} response 
+ * @param {Number} statusCode 
  * @returns 
  */
-export const sendRes = (res, response, statusCode) => {
+const sendRes = (res, response, statusCode) => {
     if (typeof response.status !== "string" || typeof response.message !== "string") {
         throw new Error("Response does not match the ApiResponse contract");
     }
@@ -22,3 +19,5 @@ export const sendRes = (res, response, statusCode) => {
     if (!response.data) response.data = null
     return res.status(statusCode).json(response);
 }
+
+module.exports = { sendRes }
