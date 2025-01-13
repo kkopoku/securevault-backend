@@ -1,13 +1,16 @@
 const User = require("../models/user.model.js")
 const Joi = require("joi")
+const { createUser } = require("../library/user.library.js")
+const { sendRes } = require("../library/api.library.js")
 
 
-const registerUser = async(req, res) => {
+const registerUser = async (req, res) => {
     const tag = "[auth.controller.ts][registerUser]"
+
     const schema = Joi.object({
         email: Joi.string().email().required(),
         password: Joi.string().min(8).required(),
-        // type: Joi.string().valid(...Object.values(UserType)).required(),
+        type: Joi.string().valid("admin", "subscriber").required(),
     }).unknown(true)
 
     const { error, value } = schema.validate(req.body)
@@ -23,7 +26,7 @@ const registerUser = async(req, res) => {
     try {
         const foundUser = await User.findOne({ email }).lean().exec()
         if (foundUser) {
-            return sendResponse(res, {
+            return sendRes(res, {
                 message: "User already exists",
                 status: "failed"
             }, 400)
@@ -42,7 +45,7 @@ const registerUser = async(req, res) => {
 }
 
 
-const login = async(req, res) => {
+const login = async (req, res) => {
     const schema = Joi.object({
         email: Joi.string().email().required(),
         password: Joi.string().min(8).required()
@@ -88,4 +91,4 @@ const login = async(req, res) => {
     }
 }
 
-module.exports = { login, registerUser};
+module.exports = { login, registerUser };
