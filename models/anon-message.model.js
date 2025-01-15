@@ -6,6 +6,10 @@ const AnonymuousMessageSchema = new Schema({
         type: ObjectId,
         required: true,
         ref: "Subsciber"
+    },
+    message: {
+        type: String,
+        required: true
     }
 },{ timestamps })
 
