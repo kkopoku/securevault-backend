@@ -1,6 +1,6 @@
 const AnonymuousMessage = require("../models/anon-message.model")
 const Joi = require("joi")
-const sendRes = require("../library/api.library")
+const { sendRes } = require("../library/api.library")
 const { encryptWithBaseKey, decryptWithBaseKey } = require("../services/encryption")
 
 const createAnonMessage = async(req, res) => {
@@ -93,7 +93,33 @@ const viewAnonMessage = async(req, res) => {
 }
 
 
-const getAnonMessages = (req,res) => {
+const getAnonMessages = async (req,res) => {
+    const tag = "[anon-message.controller.js][getAnonMessages]"
+
+    try{
+        const messages = await AnonymuousMessage.find({ user: req.user.id })
+
+        if (messages.length<1){
+            return sendRes(res,{
+                message: "No messages found",
+                status: "failed"
+            },404)
+        }
+
+        return sendRes(res,{
+            message: "Messages fetched successfully",
+            status: "success",
+            data: { messages }
+        },200)
+
+    }catch(error){
+        console.log(`${tag} Error:`, error)
+        const response = {
+            message: "Something went wrong",
+            status: "error"
+        }
+        return sendRes(res,response,500)
+    }
 
 }
 
