@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose")
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 
 const UserSchema = new Schema({
@@ -27,7 +28,7 @@ const UserSchema = new Schema({
 })
 
 
-UserSchema.methods.createJWT = () => {
+UserSchema.methods.createJWT = function (){
     return jwt.sign(
         {
             id: this.id,
@@ -42,7 +43,7 @@ UserSchema.methods.createJWT = () => {
 };
 
 
-UserSchema.methods.comparePassword = async (candidatePassword) => {
+UserSchema.methods.comparePassword = async function (candidatePassword) {
     const isMatch = await bcrypt.compare(candidatePassword, this.password);
     return isMatch;
 };
