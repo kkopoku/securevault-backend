@@ -1,11 +1,11 @@
 const { Schema, model } = require("mongoose")
 const { ObjectId } = require("mongodb")
 
-const AnonymuousMessageSchema = new Schema({
+const AnonymousMessageSchema = new Schema({
     user: {
         type: ObjectId,
         required: true,
-        ref: "Subsciber"
+        ref: "Subscriber"
     },
     message: {
         type: String,
@@ -13,6 +13,6 @@ const AnonymuousMessageSchema = new Schema({
     }
 },{ timestamps:true })
 
-const AnonymuousMessage = model("AnonymuousMessage", AnonymuousMessageSchema)
+const AnonymousMessage = model("AnonymousMessage", AnonymousMessageSchema)
 
-module.exports = AnonymuousMessage
+module.exports = AnonymousMessage

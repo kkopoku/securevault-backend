@@ -4,6 +4,7 @@ const linkRouter = require("../routes/link");
 const authRouter = require("../routes/auth.route.js");
 const analyticRouter = require("../routes/analytic.route.js");
 const anonMessageRouter = require("../routes/anon-message.route.js")
+const anonMessageLinkRouter = require("../routes/anon-message-link.route.js")
 const { authorize } = require("../middleware/auth.middleware.js")
 const cors = require("cors")
 const connectDB = require("../database/connect");
@@ -26,6 +27,7 @@ app.use(`${baseURL}/link`, linkRouter);
 app.use(`${baseURL}/auth`, authRouter);
 app.use(`${baseURL}/analytic`, analyticRouter);
 app.use(`${baseURL}/anonMessage`, authorize, anonMessageRouter)
+app.use(`${baseURL}/anonMessageLink`, authorize, anonMessageLinkRouter)
 
 app.get("/api", async (req, res) => {
   res.send(`<h1>Hello, Express!</h1>`);
