@@ -61,33 +61,39 @@ const login = async (req, res) => {
     }
 
     const { email, password } = value
+
     try {
         const foundUser = await User.findOne({ email })
         if (!foundUser) {
-            return res.status(400).json({
+            return sendRes(res, {
                 message: "Invalid credentials",
                 status: "failed"
-            })
+            }, 404)
         }
-
 
         const passwordCheck = await foundUser.comparePassword(password)
         if (!passwordCheck) {
-            return res.status(400).json({
+            return sendRes(res, {
                 message: "Invalid credentials",
                 status: "failed"
-            })
+            }, 400)
         }
 
         const token = foundUser.createJWT()
 
-        return res
-            .status(200)
-            .json({ user: foundUser, token, message: "You logged in successfully" })
+        return sendRes(res, {
+            message: "You logged in successfully",
+            status: "success",
+            data: { user: foundUser, token }
+        }, 200)
 
     } catch (error) {
         console.log(error)
-        return res.status(500).json({ message: "Internal Server Error" })
+        return sendRes(res, {
+            message: "Something went wrong",
+            status: "error",
+            data: { user: foundUser }
+        }, 500)
     }
 }
 
