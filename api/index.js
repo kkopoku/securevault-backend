@@ -3,9 +3,13 @@ const app = express();
 const linkRouter = require("../routes/link");
 const authRouter = require("../routes/auth.route.js");
 const analyticRouter = require("../routes/analytic.route.js");
+const anonMessageRouter = require("../routes/anon-message.route.js")
+const { authorize } = require("../middleware/auth.middleware.js")
 const cors = require("cors")
 const connectDB = require("../database/connect");
 const uri = process.env.MONGO_URI;
+
+const baseURL = "/api/v1"
 
 connectDB(uri);
 
@@ -18,9 +22,10 @@ app.get("/", function(req, res){ return res.json("securevault")})
 app.get("/health", function(req, res){ return res.json("success")})
 
 // Routes
-app.use('/api/v1/link', linkRouter);
-app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/analytic', analyticRouter);
+app.use(`${baseURL}/link`, linkRouter);
+app.use(`${baseURL}/auth`, authRouter);
+app.use(`${baseURL}/analytic`, analyticRouter);
+app.use(`${baseURL}/anonMessage`, authorize, anonMessageRouter)
 
 app.get("/api", async (req, res) => {
   res.send(`<h1>Hello, Express!</h1>`);
