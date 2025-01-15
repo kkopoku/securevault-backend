@@ -1,6 +1,5 @@
-const Analytics = require("../models/analytic.model.js")
 const { sendRes } = require("../library/api.library.js")
-const eventQueue = require("../jobs/analytic.job.js")
+const linkCreatedQueue = require("../jobs/link-created.job.js")
 const Joi = require("joi")
 
 const linkCreated = async (req, res) => {
@@ -21,7 +20,7 @@ const linkCreated = async (req, res) => {
 
         const { type } = value
 
-        await eventQueue.add({ type })
+        await linkCreatedQueue.add({ type })
 
         return sendRes(res,{
             message: "linkCreated event acknowledged",
