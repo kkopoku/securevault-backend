@@ -11,7 +11,7 @@ const AnonymuousMessageSchema = new Schema({
         type: String,
         required: true
     }
-},{ timestamps })
+},{ timestamps:true })
 
 const AnonymuousMessage = model("AnonymuousMessage", AnonymuousMessageSchema)
 
