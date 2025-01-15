@@ -1,6 +1,7 @@
 const User = require("../models/user.model")
 const jwt = require("jsonwebtoken")
 const Joi = require("joi")
+const { sendRes } = require("../library/api.library")
 
 
 const authorize = async (req, res, next) => {
