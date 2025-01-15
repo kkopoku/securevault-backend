@@ -21,7 +21,6 @@ const linkCreated = async (req, res) => {
 
         const { type } = value
 
-        console.log("it comes here")
         await eventQueue.add({ type })
 
         return sendRes(res,{
