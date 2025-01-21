@@ -1,4 +1,5 @@
 const AnonymousMessage = require("../models/anon-message.model")
+const AnonymousMessageLink = require("../models/anon-message-link.model")
 const Joi = require("joi")
 const { sendRes } = require("../library/api.library")
 const { encryptWithBaseKey, decryptWithBaseKey } = require("../services/encryption")
@@ -10,6 +11,7 @@ const createAnonMessage = async(req, res) => {
 
         const schema = Joi.object({
             message: Joi.string().required(),
+            linkId: Joi.string().required()
         })
 
         const { error, value } = schema.validate(req.body)
@@ -21,8 +23,15 @@ const createAnonMessage = async(req, res) => {
             })
         }
 
-        const { message } = value
-
+        const { message, linkId } = value
+        const messageLink = await AnonymousMessageLink.findOne({ oid: linkId })
+        if(!messageLink){
+            return sendRes(res, {
+                message: "Message link not found",
+                status: "failed"
+            }, 404)
+        }
+        
         const encryptedMessage = encryptWithBaseKey(message)
         await AnonymousMessage.create({
             message: encryptedMessage,
