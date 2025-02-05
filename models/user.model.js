@@ -1,5 +1,6 @@
-import { Schema, model } from "mongoose";
-import bcrypt from "bcrypt"
+const { Schema, model } = require("mongoose")
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 
 const UserSchema = new Schema({
@@ -27,7 +28,7 @@ const UserSchema = new Schema({
 })
 
 
-userSchema.methods.createJWT = () => {
+UserSchema.methods.createJWT = function (){
     return jwt.sign(
         {
             id: this.id,
@@ -42,17 +43,17 @@ userSchema.methods.createJWT = () => {
 };
 
 
-userSchema.methods.comparePassword = async (candidatePassword) => {
+UserSchema.methods.comparePassword = async function (candidatePassword) {
     const isMatch = await bcrypt.compare(candidatePassword, this.password);
     return isMatch;
 };
 
 
-userSchema.pre('save', async function (next) {
+UserSchema.pre('save', async function (next) {
     try {
         if (this.isModified('password')) {
             const salt = await bcrypt.genSalt(10);
-            this.password = bcrypt.hash(this.password, salt);
+            this.password = await bcrypt.hash(this.password, salt);
         }
         next();
     } catch (error) {
@@ -61,4 +62,5 @@ userSchema.pre('save', async function (next) {
 });
 
 const User = model('User', UserSchema)
-export default User
+
+module.exports = User

@@ -1,5 +1,5 @@
-import { Schema, model } from "mongoose"
-import User from "./user"
+const { Schema } = require("mongoose")
+const User = require("./user.model")
 
 
 const AdminSchema = new Schema({
@@ -12,4 +12,5 @@ const AdminSchema = new Schema({
 
 
 const Admin = User.discriminator("admin", AdminSchema)
-export default Admin
+
+module.exports = Admin

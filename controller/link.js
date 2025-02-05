@@ -2,6 +2,7 @@ const Link = require("../models/link");
 const { generateRandomString } = require("../utils");
 const sendEmail = require("../services/email");
 const { runTest, encryptWithBaseKey, encryptWithUserPassphrase, decryptWithBaseKey, decryptWithUserPassphrase } = require("../services/encryption");
+const linkCreatedQueue = require("../jobs/link-created.job")
 
 const createLink = async (req, res) => {
   const { message, viewNumber, lifetime, passphrase, recipient } = req.body;
@@ -33,7 +34,6 @@ const createLink = async (req, res) => {
     });
 
     if (recipient) {
-      console.log("It is getting here!");
       const emailMessage = `SECUREVAULT ALERTS\nA secure message has been sent to you. Kindly click the link below to access your secure message:\nLink: ${link.link}\nPassword: ${passphrase ? passphrase :"n/a"}`;
       try {
         await sendEmail(recipient, "SecureVault Alert", emailMessage);
@@ -42,6 +42,8 @@ const createLink = async (req, res) => {
         console.error("Failed to send email:", emailError);
       }
     }
+
+    linkCreatedQueue.add();
 
     res.status(201).json({
       message: "Link created successfully",
