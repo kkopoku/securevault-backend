@@ -21,14 +21,14 @@ const linkCreatedQueue = new Bull("linkCreatedQueue", {
 });
 
 
-linkCreatedQueue.process(async (data) => {
+linkCreatedQueue.process(async () => {
     const tag = "[analytic.job.js][process]"
     console.log(`${tag} Processing link job`)
 
     try{
-        await Analytics.create({ type: "Link" })
+        await Analytics.create({ type: "link" })
     }catch(error){
-        console.log(`${tag} Failed to write to DB`)
+        console.log(`${tag} Error:`, error);
     }
 
 });
