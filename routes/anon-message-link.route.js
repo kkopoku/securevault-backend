@@ -1,9 +1,9 @@
-const { createAnonMessageLink } = require("../controller/anon-message-link.controller.js")
-const anonMessageLinkRouter = require('express').Router()
-const { authorize } = require("../middleware/auth.middleware.js")
+import express from "express";
+import { createAnonMessageLink } from "../controller/anon-message-link.controller.js"
+import { authorize } from "../middleware/auth.middleware.js"
 
+const router = express.Router();
 
-anonMessageLinkRouter.post("/create", authorize, createAnonMessageLink);
+router.post("/create", authorize, createAnonMessageLink);
 
-
-module.exports = anonMessageLinkRouter
+export default router;

@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "echo \"Info: nothing to build\" && exit 0"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",

@@ -1,10 +1,15 @@
-const crypto = require('crypto');
+import crypto from "crypto";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+// Define base key and initialization vector (IV) for encryption and decryption.
 
 const BASE_KEY = Buffer.from(process.env.APP_KEY,"hex");
 const BASE_IV = crypto.randomBytes(16);
 
 // Encrypt function
-function encryptWithBaseKey(text) {
+export function encryptWithBaseKey(text) {
     const cipher = crypto.createCipheriv('aes-256-cbc', BASE_KEY, BASE_IV);
     let encrypted = cipher.update(text, 'utf8', 'hex');
     encrypted += cipher.final('hex');
@@ -12,7 +17,7 @@ function encryptWithBaseKey(text) {
 }
 
 // Decrypt function
-function decryptWithBaseKey(encryptedText) {
+export function decryptWithBaseKey(encryptedText) {
     const [iv, encrypted] = encryptedText.split(':');
     const decipher = crypto.createDecipheriv('aes-256-cbc', BASE_KEY, Buffer.from(iv, 'hex'));
     let decrypted = decipher.update(encrypted, 'hex', 'utf8');
@@ -21,7 +26,7 @@ function decryptWithBaseKey(encryptedText) {
 }
 
 // Encrypt function
-function encryptWithUserPassphrase(text, passphrase) {
+export function encryptWithUserPassphrase(text, passphrase) {
     const userKey = crypto.pbkdf2Sync(passphrase, BASE_KEY, 10000, 32, 'sha256');
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv('aes-256-cbc', userKey, iv);
@@ -31,7 +36,7 @@ function encryptWithUserPassphrase(text, passphrase) {
 }
 
 // Decrypt function
-function decryptWithUserPassphrase(encryptedText, passphrase) {
+export function decryptWithUserPassphrase(encryptedText, passphrase) {
     const userKey = crypto.pbkdf2Sync(passphrase, BASE_KEY, 10000, 32, 'sha256');
     const [iv, encrypted] = encryptedText.split(':');
     const decipher = crypto.createDecipheriv('aes-256-cbc', userKey, Buffer.from(iv, 'hex'));
@@ -40,7 +45,7 @@ function decryptWithUserPassphrase(encryptedText, passphrase) {
     return decrypted;
 }
 
-function runTest(){
+export function runTest(){
     console.log("Test is run: ", process.env.APP_KEY)
 
     let text = "Hello World";
@@ -60,11 +65,3 @@ function runTest(){
         decryptedText: decryptedText
     }
 }
-
-module.exports = {
-    encryptWithBaseKey,
-    decryptWithBaseKey,
-    encryptWithUserPassphrase,
-    decryptWithUserPassphrase,
-    runTest
-};

@@ -1,6 +1,6 @@
 //Uitility functions
 
-function generateRandomString(length) {
+export function generateRandomString(length) {
   const charset =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
@@ -12,5 +12,3 @@ function generateRandomString(length) {
 
   return result;
 }
-
-module.exports = {generateRandomString}

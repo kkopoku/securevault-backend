@@ -5,7 +5,7 @@
  * @param {Number} statusCode 
  * @returns 
  */
-const sendRes = (res, response, statusCode) => {
+export const sendRes = (res, response, statusCode) => {
     if (typeof response.status !== "string" || typeof response.message !== "string") {
         throw new Error("Response does not match the ApiResponse contract");
     }
@@ -19,5 +19,3 @@ const sendRes = (res, response, statusCode) => {
     if (!response.data) response.data = null
     return res.status(statusCode).json(response);
 }
-
-module.exports = { sendRes }

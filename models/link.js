@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const LinkSchema = new mongoose.Schema({
   message: {
@@ -75,4 +75,6 @@ LinkSchema.methods.comparePassphrase = async function (candidatePassphrase) {
 };
 
 
-module.exports = mongoose.model("Link", LinkSchema);
+const Link = mongoose.model("Link", LinkSchema);
+
+export default Link;

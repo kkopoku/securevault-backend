@@ -1,6 +1,9 @@
-// index.js
-require("dotenv").config();
-const app = require("./api")
+import dotenv from "dotenv";
+import api from "./api/index.js"
+
+dotenv.config();
+
+const app = api;
 const port = 8000;
 
 async function run() {

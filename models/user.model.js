@@ -1,6 +1,6 @@
-const { Schema, model } = require("mongoose")
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
+import { Schema, model } from "mongoose"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
 
 const UserSchema = new Schema({
@@ -63,4 +63,4 @@ UserSchema.pre('save', async function (next) {
 
 const User = model('User', UserSchema)
 
-module.exports = User
+export default User;
