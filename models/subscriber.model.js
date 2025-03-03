@@ -1,5 +1,5 @@
-const { Schema } = require("mongoose");
-const User = require("./user.model");
+import { Schema } from "mongoose";
+import User from "./user.model.js";
 
 
 const SubscriberSchema = new Schema({
@@ -13,4 +13,4 @@ const SubscriberSchema = new Schema({
 
 const Subscriber = User.discriminator('subscriber', SubscriberSchema)
 
-module.exports = Subscriber
+export default Subscriber;

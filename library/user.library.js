@@ -1,7 +1,7 @@
-const Admin = require("../models/admin.model.js")
-const Subscriber = require("../models/subscriber.model.js")
+import Admin from "../models/admin.model.js"
+import Subscriber from "../models/subscriber.model.js"
 
-const createUser = async (data) => {
+export const createUser = async (data) => {
     const type = (data.type).toLowerCase()
     switch(type){
         case "admin":
@@ -16,7 +16,7 @@ const createUser = async (data) => {
 }
 
 
-const createAdmin = async (data) => {
+export const createAdmin = async (data) => {
     try{
         const admin = await Admin.create({
             firstName: data.firstName,
@@ -32,7 +32,7 @@ const createAdmin = async (data) => {
 }
 
 
-const createSubscriber = async (data) => {
+export const createSubscriber = async (data) => {
     try{
         const subscriber = await Subscriber.create({
             firstName: data.firstName,
@@ -47,5 +47,3 @@ const createSubscriber = async (data) => {
         return false
     }
 }
-
-module.exports = { createUser }

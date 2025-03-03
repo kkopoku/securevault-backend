@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose")
-const { ObjectId} = require("mongodb")
+import { Schema, model } from "mongoose"
+import { ObjectId} from "mongodb"
 
 
 const AnonymousMessageLink = new Schema({
@@ -18,4 +18,4 @@ const AnonymousMessageLink = new Schema({
 
 const AnonymousMessageLinkModel = model("AnonymousMessageLink", AnonymousMessageLink)
 
-module.exports = AnonymousMessageLinkModel
+export default AnonymousMessageLinkModel;

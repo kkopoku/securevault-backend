@@ -1,26 +1,22 @@
-// const Joi = require("joi")
-const AnonymousMessageLink = require("../models/anon-message-link.model")
-const { generateRandomString } = require("../utils");
+import AnonymousMessageLink from "../models/anon-message-link.model.js";
+import { generateRandomString } from "../utils.js";
 
-const createAnonMessageLink = async(req, res) => {
-    const tag = `[anon-message-link.controller.js][createAnonMessageLink]`
+export const createAnonMessageLink = async (req, res) => {
+    const tag = "[anon-message-link.controller.js][createAnonMessageLink]";
 
-    const oid = generateRandomString(4)
+    const oid = generateRandomString(4);
 
-    try{
+    try {
         await AnonymousMessageLink.create({
             oid,
             user: req.user.id
-        })
+        });
         // dispatch anon link created event
-    }catch(error){
-        console.log(`${tag} ${error}`)
-        return sendRes(res,{
+    } catch (error) {
+        console.log(`${tag} ${error}`);
+        return sendRes(res, {
             message: "Internal Server Error",
             status: "failed"
-        },500)
+        }, 500);
     }
-}
-
-
-module.exports = { createAnonMessageLink }
+};

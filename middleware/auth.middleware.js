@@ -1,10 +1,10 @@
-const User = require("../models/user.model")
-const jwt = require("jsonwebtoken")
-const Joi = require("joi")
-const { sendRes } = require("../library/api.library")
+import User from "../models/user.model.js"
+import jwt from "jsonwebtoken"
+import Joi from "joi"
+import { sendRes } from "../library/api.library.js"
 
 
-const authorize = async (req, res, next) => {
+export const authorize = async (req, res, next) => {
 
     const logtag = "[auth.middleware.ts][authorize]"
     const schema = Joi.object({
@@ -62,6 +62,3 @@ const authorize = async (req, res, next) => {
         },401) 
     }
 }
-
-
-module.exports = { authorize }

@@ -1,16 +1,16 @@
-const express = require("express");
-const app = express();
-const linkRouter = require("../routes/link");
-const authRouter = require("../routes/auth.route.js");
-const analyticRouter = require("../routes/analytic.route.js");
-const anonMessageRouter = require("../routes/anon-message.route.js")
-const anonMessageLinkRouter = require("../routes/anon-message-link.route.js")
-const { authorize } = require("../middleware/auth.middleware.js")
-const cors = require("cors")
-const connectDB = require("../database/connect");
-const uri = process.env.MONGO_URI;
+import express from "express";
+import linkRouter from "../routes/link.js";
+import authRouter from "../routes/auth.route.js";
+import anonMessageRouter from "../routes/anon-message.route.js";
+import anonMessageLinkRouter from "../routes/anon-message-link.route.js";
+import { authorize } from "../middleware/auth.middleware.js";
+import cors from "cors";
+import connectDB from "../database/connect.js";
+import "../events/index.events.js";
 
-const baseURL = "/api/v1"
+const app = express();
+const uri = process.env.MONGO_URI;
+const baseURL = "/api/v1";
 
 connectDB(uri);
 
@@ -18,19 +18,17 @@ connectDB(uri);
 app.use(express.json());
 app.use(cors());
 
-app.get("/", function(req, res){ return res.json("securevault")})
-
-app.get("/health", function(req, res){ return res.json("success")})
+app.get("/", (req, res) => res.json("securevault"));
+app.get("/health", (req, res) => res.json("success"));
 
 // Routes
 app.use(`${baseURL}/link`, linkRouter);
 app.use(`${baseURL}/auth`, authRouter);
-app.use(`${baseURL}/analytic`, analyticRouter);
-app.use(`${baseURL}/anonMessage`, authorize, anonMessageRouter)
-app.use(`${baseURL}/anonMessageLink`, authorize, anonMessageLinkRouter)
+app.use(`${baseURL}/anonMessage`, authorize, anonMessageRouter);
+app.use(`${baseURL}/anonMessageLink`, authorize, anonMessageLinkRouter);
 
 app.get("/api", async (req, res) => {
-  res.send(`<h1>Hello, Express!</h1>`);
+  res.send("<h1>Hello, Express!</h1>");
 });
 
-module.exports = app;
+export default app;

@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model } from "mongoose";
 
 const AnalyticSchema = new Schema({
 
@@ -11,4 +11,5 @@ const AnalyticSchema = new Schema({
 }, { timestamps:true })
 
 const Analytics = model("Analytic", AnalyticSchema)
-module.exports =  Analytics
+
+export default Analytics;

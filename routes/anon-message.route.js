@@ -1,10 +1,11 @@
-const { createAnonMessage, viewAnonMessage, getAnonMessages } = require("../controller/anon-message.controller.js")
-const anonMessageRouter = require('express').Router()
+import express from "express";
+import { createAnonMessage, viewAnonMessage, getAnonMessages } from "../controller/anon-message.controller.js"
+
+const router = express.Router();
+
+router.get("/", getAnonMessages);
+router.post("/:id", viewAnonMessage);
+router.post("/create", createAnonMessage);
 
 
-anonMessageRouter.get("/", getAnonMessages);
-anonMessageRouter.post("/:id", viewAnonMessage);
-anonMessageRouter.post("/create", createAnonMessage);
-
-
-module.exports = anonMessageRouter
+export default router;
