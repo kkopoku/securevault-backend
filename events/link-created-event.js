@@ -2,7 +2,7 @@ import eventEmitter from "../config/events.config.js";
 import Analytics from "../models/analytic.model.js";
 
 
-eventEmitter.on("link-created", async (data) => {
+eventEmitter.on("link-created", async () => {
 
   const tag = "[link-created.job.js][link-created]";
   console.log(`${tag} Link created event received`);

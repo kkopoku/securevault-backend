@@ -2,6 +2,7 @@ import Link from "../models/link.js";
 import { generateRandomString } from "../utils.js";
 import sendEmail from "../services/email.js";
 import { runTest, encryptWithBaseKey, encryptWithUserPassphrase, decryptWithBaseKey, decryptWithUserPassphrase } from "../services/encryption.js";
+import eventEmitter from "../config/events.config.js";
 
 export const createLink = async (req, res) => {
   const { message, viewNumber, lifetime, passphrase, recipient } = req.body;
@@ -42,7 +43,7 @@ export const createLink = async (req, res) => {
       }
     }
 
-    // linkCreatedQueue.add();
+    eventEmitter.emit("link-created");
 
     res.status(201).json({
       message: "Link created successfully",
